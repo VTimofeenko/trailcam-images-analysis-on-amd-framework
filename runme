@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SRC="./src-images/"
+
+# Batching approach. Without it the system runs out of VRAM and catches fire.
+
+# Swap for `find` if needed
+FILES=($(fd . "$SRC" -t f -e jpg))
+for ((i=0; i<${#FILES[@]}; i+=50)); do
+    BATCH=("${FILES[@]:i:50}")
+    echo "Processing batch starting at index $i..."
+
+    podman run -it --rm \
+      --memory=8g \
+      -v "$(pwd)":/workspace \
+      -w /workspace \
+      --device /dev/kfd --device /dev/dri \
+      --security-opt label=disable \
+      -e HSA_OVERRIDE_GFX_VERSION=11.0.0 \
+      -e MIOPEN_FIND_MODE=2 \
+      my-rocm-image-with-ultralytics:latest \
+      python3 animal-finder-batch.py "${BATCH[@]}"
+
+    echo "Batch done"
+
+done
+
