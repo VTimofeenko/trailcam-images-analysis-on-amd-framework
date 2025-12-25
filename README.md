@@ -24,11 +24,11 @@ Nullus refundus.
 
 # Usage
 
-1. Ensure that your system allocated 4GB to GPU (set "gaming" mod in BIOS). You
-   can check the actual value by running, say, `amd_gpu_top` and looking at VRAM
-   value.
-2. (potentially necessary, improved stability in my experiments). Have this in
-   the kernel command line:
+1. Ensure that your system allocated 4GB to GPU (set "gaming" mode in BIOS). You
+   can check the actual value by running, say, `amd_gpu_top` and looking at the
+   VRAM value.
+2. This step is potentially necessary. It has improved stability in my
+   experiments. Add this to the kernel command line:
 
    ```
       "amdgpu.mes=0" # Disable the Micro Engine Scheduler
@@ -37,7 +37,7 @@ Nullus refundus.
       "amdgpu.dcdebugmask=0x10" # Optional: Disable Panel Self Refresh (Prevents DE flickers/hangs)
    ```
 
-3. Set up `podman`,
+3. Set up `podman`
 4. Clone this repository
 5. Run `podman build -t my-rocm-image-with-ultralytics:latest .`
 6. Prepare image files. The general expectation of the procedure is that the files are: 
@@ -57,14 +57,15 @@ Nullus refundus.
 
    ```
 
-8. (optional, but saves time on restoring the DE) Exit your desktop environment,
+8. Optional, but saves time on restoring the DE. Exit your desktop environment,
    log into TTY
 9. Run `./runme`
 10. Watch the logs
 11. Observe images in `./output` directory.
 
 By default, the script will only output images where there is an animal and
-there are no persons. Feel free to tweak the code to adjust this behavior.
+there are no people detected. Feel free to tweak the code to adjust this
+behavior.
 
 # Appendix
 ## File organization
